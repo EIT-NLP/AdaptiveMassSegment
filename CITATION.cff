@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the AMS paper and the upstream KVPress work."
+title: "AMS KVPress: Adaptive Mass-Segmented KV Compression"
+type: software
+date-released: 2026-05-11
+authors:
+  - name: "AMS authors"
+license: "Apache-2.0"
+preferred-citation:
+  type: unpublished
+  title: "Adaptive Mass-Segmented KV Compression for Long-Context Reasoning"
+  authors:
+    - name: "AMS authors"
+  year: 2026
+references:
+  - type: article
+    title: "Expected Attention: KV Cache Compression by Estimating Attention from Future Queries Distribution"
+    authors:
+      - family-names: "Devoto"
+        given-names: "Alessio"
+      - family-names: "Jeblick"
+        given-names: "Maximilian"
+      - family-names: "Jegou"
+        given-names: "Simon"
+    year: 2025
+    url: "https://arxiv.org/abs/2510.00636"

@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[eval]"
+
+      - name: Compile Python files
+        run: python -m compileall -q kvpress evaluation tests
+
+      - name: Import smoke test
+        run: |
+          python - <<'PY'
+          from evaluation.evaluate_registry import DATASET_REGISTRY, PRESS_REGISTRY
+          from evaluation.method_registry import METHOD_REGISTRY
+          from kvpress import AdaptiveMassSegmentWrapperHeadPress, DecodingPress
+
+          assert "math500" in DATASET_REGISTRY
+          assert "decoding_adaptive_segment_head_expected_attention" in PRESS_REGISTRY
+          assert "ams_expected" in METHOD_REGISTRY
+          print(AdaptiveMassSegmentWrapperHeadPress.__name__, DecodingPress.__name__)
+          PY

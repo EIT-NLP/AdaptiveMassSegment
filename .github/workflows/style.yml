@@ -1,0 +1,35 @@
+name: Repository Hygiene
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check generated Python cache files
+        run: |
+          if find . -type d -name __pycache__ | grep -q .; then
+            echo "__pycache__ directories should not be committed"
+            find . -type d -name __pycache__
+            exit 1
+          fi
+
+      - name: Check SPDX headers
+        run: |
+          missing="$(find kvpress evaluation tests -name '*.py' -print0 | xargs -0 grep -L 'SPDX-FileCopyrightText:' || true)"
+          if [ -n "$missing" ]; then
+            echo "$missing"
+            exit 1
+          fi
+
+      - name: Check local path leaks
+        run: |
+          if grep -R -nE '/code/Script|/code/Dataset|kvpress-main|<fill-from-registry>' \
+            --exclude=style.yml --exclude-dir=.git --exclude-dir=.venv --exclude-dir=venv .; then
+            exit 1
+          fi

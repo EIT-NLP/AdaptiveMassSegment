@@ -1,0 +1,12 @@
+name: kvpress-ams
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pytorch=2.5.1
+  - pytorch-cuda=12.1
+  - pip:
+      - -e .[eval]
